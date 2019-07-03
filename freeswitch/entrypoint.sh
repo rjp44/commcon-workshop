@@ -14,7 +14,7 @@ done
 
 
 if [ "$1" = "" ]; then
-  COMMAND="/usr/local/bin/freeswitch"
+  COMMAND="/usr/local/freeswitch/bin/freeswitch"
 else
   COMMAND="$@"
 fi

@@ -1,0 +1,12 @@
+<include>
+        <gateway name="simwood">
+           <param name="auth-username" value="___$TRUNK_ACCOUNT___"/>
+           <param name="password" value="___$TRUNK_PASSWORD___"/>
+           <param name="extension" value="default"/>
+           <param name="proxy" value="register.simwood.com"/>
+           <param name="expire-seconds" value="300"/>
+           <param name="register" value="true" />
+	   <param name="register-transport" value="tls"/>
+	   <param name="ping" value="true" />
+         </gateway>
+</include>
