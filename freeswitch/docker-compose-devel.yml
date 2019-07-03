@@ -16,4 +16,5 @@ services:
       - TRUNK_PASSWORD
     volumes:
       - ./scratch/usr/local/freeswitch/conf:/usr/local/freeswitch/conf
+      - ./credentials:/credentials
       - ./templates:/templates

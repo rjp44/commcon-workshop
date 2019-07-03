@@ -3,6 +3,7 @@
 FREESWITCH_USER=${FREESWITCH_USER:-freeswitch}
 FREESWITCH_DOMAIN=${FREESWITCH_DOMAIN:-localhost.localdomin}
 FREESWITCH_ORG=${FREESWITCH_ORG:-AcmeWidgets}
+CREDENTIALS="/credentials/google.json"
 
 SUBST=" "
 for VAR in $(env);
@@ -12,6 +13,11 @@ do
   SUBST+=`printf "%ss/___%s___/%s/" " -e " "\\\$$NAME" "$EVALUE"`
 done
 
+export GOOGLE_APPLICATION_CREDENTIALS="${CREDENTIALS}";
+
+if [ ! -f $GOOGLE_APPLICATION_CREDENTIALS ]; then
+  echo "NO ${GOOGLE_APPLICATION_CREDENTIALS}      please supply..." && exit 1
+fi
 
 if [ "$1" = "" ]; then
   COMMAND="/usr/local/freeswitch/bin/freeswitch"
@@ -26,8 +32,6 @@ do
     cd ${DIR}
     for FILE in `find . -type f -print`
     do
-      echo $DIR $FILE
-      echo sed $SUBST
       sed $SUBST <${FILE} >/${FILE}
     done
   else

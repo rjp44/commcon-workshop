@@ -14,3 +14,5 @@ services:
       - TRUNK_TYPE
       - TRUNK_ACCOUNT
       - TRUNK_PASSWORD
+    volumes:
+      - ./credentials:/credentials
