@@ -1,6 +1,7 @@
 
-credentials.json
-scratch
+*/credentials/*.json
+*/credentials/*.xml
+
 
 
 # Logs
