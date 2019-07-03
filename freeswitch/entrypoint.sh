@@ -40,6 +40,18 @@ do
   fi
 done
 
+
+INTERNAL_IP=`ip -o a  | grep eth0  | grep -oE "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b" | head -1`
+mkdir -p /usr/local/freeswitch/conf/hosts
+printf "internal_ip = ${INTERNAL_IP}\n"
+(
+  printf '<include>\n'
+  printf "  <X-PRE-PROCESS cmd=\"set\" data=\"internal_ip=${INTERNAL_IP}\"/>\n"
+  printf '  <X-PRE-PROCESS cmd="set" data="lan_ip=$${local_ip_v4}"/>\n'
+  printf '</include>'
+) > /usr/local/freeswitch/conf/hosts/internal_ip.xml
+
+
 if [ "${FREESWITCH_UID}" != "" ] && [ "${FREESWITCH_GID}" != "" ]; then
   # recreate user and group for freeswitch
   deluser freeswitch && \
