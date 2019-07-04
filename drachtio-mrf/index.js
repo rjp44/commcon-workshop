@@ -16,11 +16,12 @@ const provider_port = config.get('trunk.port') || '5061';
 srf.connect(config.get('drachtio'))
     .on('connect', (err, hp) => {
         srf.request({
-            uri: `sip:${provider_username}@${provider_registrar}:${provider_port};transport=${provider_transport}`,
+            uri: `sips:${provider_username}@${provider_registrar}:${provider_port};transport=${provider_transport}`,
             method: "REGISTER",
             headers: {
                 "From": `sip:${provider_username}@${provider_registrar}`,
                 "To": `sip:${provider_username}@${provider_registrar}`,
+                "Contact": `sips:${provider_registrar}:${provider_port};transport=${provider_transport}`,
                 "User-Agent": "drachtio-srf",
                 "Allow": "OPTIONS, INVITE, ACK, BYE, CANCEL, UPDATE, PRACK, MESSAGE, REFER"
             },
@@ -55,9 +56,7 @@ function run(ms) {
             .then(({ endpoint, dialog }) => {
                 dialog.on('destroy', () => endpoint.destroy());
                 setHandlers(endpoint, dialog);
-                endpoint.api('dialogflow_start', `
-$ { endpoint.uuid } $ { projectId } $ { lang } 30 $ { startEvent }
-`);
+                endpoint.api('dialogflow_start', `$ { endpoint.uuid } $ { projectId } $ { lang } 30 $ { startEvent }`);
             })
             .catch((err) => {
                 console.log(err, 'Error connecting call to freeswitch');
