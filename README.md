@@ -4,7 +4,7 @@ This is a collection of resources for CommCon Workshop
 
 ## Freeswitch
 
-A freeswitch instance connecting to Simwood and Google cloud services for use by drachtio-fsmrf. The runnable container specification with config file substitution is contained in the **freeswitch** directory:
+A freeswitch instance connecting to Google cloud services for use by drachtio-fsmrf. The runnable container specification with config file substitution is contained in the **freeswitch** directory:
 
 ```
 cd freeswitch
@@ -23,16 +23,6 @@ mv path_to_google_credentials.json credentials/google.json
 
   [84c90207]: https://cloud.google.com/docs/authentication/getting-started "GOOGLE_APPLICATION_CREDENTIALS file"
 
-You will also need your Simwood trunk details:
-
-```
-export TRUNK_TYPE=Simwood
-export TRUNK_ACCOUNT=XXXXXXXXXXXX
-export TRUNK_PASSWORD=YYYYYYYYYYYYY
-```
-
-These will be substituted into the config of the running freeswitch container when you start it
-
 ### Starting
 
 If you have docker compose then a single container docker-compose file is provided here for convenience:
@@ -44,7 +34,7 @@ docker-compose up
 Otherwise build and start by hand, something like:
 ```
 docker build -t freeswitch-google .
-docker run -v `pwd`/credentials:/credentials -e TRUNK_TYPE -e TRUNK_ACCOUNT -e TRUNK_PASSWORD -p 80:80 -p 443:443 -p 5061:5061 freeswitch-google
+docker run -v `pwd`/credentials:/credentials FREESWITCH_PASSWORD -p 8021:8021 -p 5080:5080 -p 5081:5081 freeswitch-google
 ```
 
 ### Extending and configuring

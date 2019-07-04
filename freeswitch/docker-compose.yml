@@ -6,13 +6,16 @@ services:
       context: .
     restart: unless-stopped
     container_name: freeswitch-google
-    ports:
-      - "5061:5061"
-      - "8443:8443"
-      - "8080:8080"
     environment:
-      - TRUNK_TYPE
-      - TRUNK_ACCOUNT
-      - TRUNK_PASSWORD
+      - FREESWITCH_PASSWORD
+      - FREESWITCH_SIP_PORT=5080
+      - FREESWITCH_DTLS_SIP_PORT=5081
+      - FREESWITCH_RTP_START_PORT=25000
+      - FREESWITCH_RTP_END_PORT=25020
+    ports:
+      - "8021:8021"
+      - "5080:5080"
+      - "5081:5081"
+      - "25000-25020:25000-25020"
     volumes:
       - ./credentials:/credentials

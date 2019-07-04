@@ -3,6 +3,10 @@
 FREESWITCH_USER=${FREESWITCH_USER:-freeswitch}
 FREESWITCH_DOMAIN=${FREESWITCH_DOMAIN:-localhost.localdomin}
 FREESWITCH_ORG=${FREESWITCH_ORG:-AcmeWidgets}
+export freeswitch_sip_port=${FREESWITCH_SIP_PORT:-5080}
+export freeswitch_dtls_sip_port=${FREESWITCH_DTLS_SIP_PORT:-5081}
+export rtp_start_port=${FREESWITCH_RTP_START_PORT:-25000}
+export rtp_end_port=${FREESWITCH_RTP_END_PORT:-25020}
 CREDENTIALS="/credentials/google.json"
 
 SUBST=" "
@@ -20,13 +24,13 @@ if [ ! -f $GOOGLE_APPLICATION_CREDENTIALS ]; then
 fi
 
 if [ "$1" = "" ]; then
-  COMMAND="/usr/local/freeswitch/bin/freeswitch"
+  COMMAND="/usr/local/freeswitch/bin/freeswitch -db /dev/shm -log /usr/local/freeswitch/log -conf /usr/local/freeswitch/conf -run /usr/local/freeswitch/run"
 else
   COMMAND="$@"
 fi
 
 # Recursively copy any templated config files (with ENV substitution)
-for DIR in /templates/all /templates/${TRUNK_TYPE}
+for DIR in /templates/all
 do
   if [ -d ${DIR} ]; then
     cd ${DIR}
@@ -42,15 +46,15 @@ done
 
 
 INTERNAL_IP=`ip -o a  | grep eth0  | grep -oE "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b" | head -1`
-mkdir -p /usr/local/freeswitch/conf/hosts
-printf "internal_ip = ${INTERNAL_IP}\n"
-(
-  printf '<include>\n'
-  printf "  <X-PRE-PROCESS cmd=\"set\" data=\"internal_ip=${INTERNAL_IP}\"/>\n"
-  printf '  <X-PRE-PROCESS cmd="set" data="lan_ip=$${local_ip_v4}"/>\n'
-  printf '</include>'
-) > /usr/local/freeswitch/conf/hosts/internal_ip.xml
-
+# So horrid, but doesn't need extra binaries
+EXTERNAL_IP=`wget -qO- http://ifconfig.me | grep -oE "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b" | xargs echo`
+cat >/usr/local/freeswitch/conf/addresses.xml <<__EOF__
+<include>
+  <X-PRE-PROCESS cmd="set" data="internal_ip=${INTERNAL_IP}"/>
+  <X-PRE-PROCESS cmd="set" data="external_ip=${EXTERNAL_IP}"/>
+  <X-PRE-PROCESS cmd="set" data="lan_ip=${INTERNAL_IP}"/>
+</include>
+__EOF__
 
 if [ "${FREESWITCH_UID}" != "" ] && [ "${FREESWITCH_GID}" != "" ]; then
   # recreate user and group for freeswitch

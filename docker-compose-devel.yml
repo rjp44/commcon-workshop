@@ -1,9 +1,18 @@
 version: '3'
 
 services:
+  drachtio:
+    build:
+      context: ./drachtio
+    restart: unless-stopped
+    ports:
+      - "9022:9022"
+      - "5061:5061"
+      - "5060:5060"
+
   freeswitch-google:
     build:
-      context: .
+      context: ./freeswitch
     restart: unless-stopped
     container_name: freeswitch-google
     environment:
@@ -18,6 +27,6 @@ services:
       - "5081:5081"
       - "25000-25020:25000-25020"
     volumes:
-      - ./scratch:/scratch
+      - ./freeswitch/scratch:/scratch
       - ./credentials:/credentials
-      - ./templates:/templates
+      - ./freeswitch/templates:/templates
