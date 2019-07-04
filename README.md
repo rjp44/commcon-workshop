@@ -2,6 +2,32 @@
 
 This is a collection of resources for CommCon Workshop
 
+## TL;DR
+
+Drop your Google credential file:
+```
+mv path_to_google_credentials.json credentials/google.json
+```
+
+Start the containers:
+```
+docker-compose up
+```
+
+In another shell:
+```
+cd drachtio-mrf
+npm install
+
+export TRUNK_ACCOUNT=XXXXXXXXXXXXX
+export TRUNK_PASSWORD=YYYYYYYYYYYYY
+
+node index.js
+```
+
+At the moment there is a bug/feature/usage-misunderstanding which means that drachtio responds to the TLS SIP register 401 challenge with a UDP authed response which means it will never register. I'm looking at this, but in the meantime, comment out the register code and use an ACL trunk instead.
+
+
 ## Freeswitch
 
 A freeswitch instance connecting to Google cloud services for use by drachtio-fsmrf. The runnable container specification with config file substitution is contained in the **freeswitch** directory:
