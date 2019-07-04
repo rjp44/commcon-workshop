@@ -2,7 +2,7 @@
 
 This is a collection of resources for CommCon Workshop
 
-## TL;DR
+## How to run...
 
 Drop your Google credential file:
 ```
@@ -14,19 +14,37 @@ Start the containers:
 docker-compose up
 ```
 
-In another shell:
+Run the Drachtio mrf script:
 ```
 cd drachtio-mrf
 npm install
+```
 
+Most values in `config/default.json` will be correct/sensible for this collection of containers, but
+the goole dialoglow project info will probably need editing (see workshop contents)...
+
+```
+"dialogflow": {
+  "project": "my-project-id",
+  "lang": "en-US",
+  "event": "welcome"
+},
+```
+
+Set environment veriables corresponding to your Simwood trunk details:
+```
 export TRUNK_ACCOUNT=XXXXXXXXXXXXX
 export TRUNK_PASSWORD=YYYYYYYYYYYYY
+```
 
+Then run the sample drachtio-mrf script:
+```
 node index.js
 ```
 
-At the moment there is a bug/feature/usage-misunderstanding which means that drachtio responds to the TLS SIP register 401 challenge with a UDP authed response which means it will never register. I'm looking at this, but in the meantime, comment out the register code and use an ACL trunk instead.
+# Development: container details
 
+This covers details of each container directory you don't need to understand this to run the above, but it helps if you plan to modify any of it.
 
 ## Freeswitch
 
