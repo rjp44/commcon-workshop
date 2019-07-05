@@ -1,6 +1,6 @@
 # Commcon Workshop
 
-This is a collection of resources for CommCon Workshop
+This is a collection of resources for the second CommCon Workshop
 
 ## How to run...
 
