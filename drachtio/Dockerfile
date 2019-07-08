@@ -1,4 +1,4 @@
-FROM drachtio/drachtio-server:latest
+FROM drachtio/drachtio-server:stable
 
 LABEL maintainer="Rob Pickering <rob@aplisay.uk>"
 
