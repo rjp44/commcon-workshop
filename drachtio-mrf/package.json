@@ -12,6 +12,7 @@
     "config": "^3.0.1",
     "drachtio-fsmrf": "^1.2.8",
     "drachtio-srf": "git://github.com/rjp44/drachtio-srf.git#4.4.2-authfix",
+    "eventemitter2": "^5.0.1",
     "minimist": "^1.2.0",
     "ws": "^6.1.2"
   }
