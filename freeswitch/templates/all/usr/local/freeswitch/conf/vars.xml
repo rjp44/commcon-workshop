@@ -49,7 +49,7 @@
 
   -->
 
-
+  <X-PRE-PROCESS cmd="set" data="local_ip_v4=$${external_ip}"/>
   <X-PRE-PROCESS cmd="set" data="sound_prefix=$${sounds_dir}/en/us/callie"/>
   <!--<Z-PRE-PROCESS cmd="set" data="sound_prefix=$${sounds_dir}/en/us/allison"/> -->
 

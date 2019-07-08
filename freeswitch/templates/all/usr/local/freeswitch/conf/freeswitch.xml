@@ -36,8 +36,9 @@
   <!--#comment
       vars.xml contains all the #set directives for the preprocessor.
   -->
-  <X-PRE-PROCESS cmd="include" data="vars.xml"/>
   <X-PRE-PROCESS cmd="include" data="addresses.xml"/>
+  <X-PRE-PROCESS cmd="include" data="vars.xml"/>
+
 
   <section name="configuration" description="Various Configuration">
     <X-PRE-PROCESS cmd="include" data="autoload_configs/*.xml"/>

@@ -1,7 +1,7 @@
 const Srf = require('drachtio-srf');
 const srf = new Srf();
 const Mrf = require('drachtio-fsmrf');
-const mrf = new Mrf(srf);
+const mrf = new Mrf(srf, {debugDir:'./' });
 const config = require('config');
 const projectId = config.get('dialogflow.project');
 const lang = config.get('dialogflow.lang');
@@ -16,12 +16,12 @@ const provider_port = config.get('trunk.port') || '5061';
 srf.connect(config.get('drachtio'))
     .on('connect', (err, hp) => {
         srf.request({
-            uri: `sips:${provider_username}@${provider_registrar}:${provider_port};transport=${provider_transport}`,
+            uri: `sip:${provider_username}@${provider_registrar}:${provider_port};transport=${provider_transport}`,
             method: "REGISTER",
             headers: {
                 "From": `sip:${provider_username}@${provider_registrar}`,
                 "To": `sip:${provider_username}@${provider_registrar}`,
-                "Contact": `sips:${provider_registrar}:${provider_port};transport=${provider_transport}`,
+                "Contact": `sips:{provider_username}@${provider_registrar}:${provider_port};transport=${provider_transport}`,
                 "User-Agent": "drachtio-srf",
                 "Allow": "OPTIONS, INVITE, ACK, BYE, CANCEL, UPDATE, PRACK, MESSAGE, REFER"
             },
@@ -40,6 +40,7 @@ srf.connect(config.get('drachtio'))
                     console.log("Error registering: " + res.msg.status);
                 } else {
                     console.log("registered successfully");
+
                 }
             });
         });
@@ -48,7 +49,9 @@ srf.connect(config.get('drachtio'))
     .on('error', (err) => console.log(err, 'Error connecting'));
 
 mrf.connect(config.get('freeswitch'))
-    .then((ms) => run(ms));
+    .then((ms) => run(ms))
+    .catch(err => console.log(err));
+
 
 function run(ms) {
     srf.invite((req, res) => {
