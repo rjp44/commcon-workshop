@@ -59,7 +59,7 @@ function run(ms) {
             .then(({ endpoint, dialog }) => {
                 dialog.on('destroy', () => endpoint.destroy());
                 setHandlers(endpoint, dialog);
-                endpoint.api('dialogflow_start', `$ { endpoint.uuid } $ { projectId } $ { lang } 30 $ { startEvent }`);
+                endpoint.api('dialogflow_start', `${endpoint.uuid} ${projectId} $ {lang} 30 ${startEvent}`);
             })
             .catch((err) => {
                 console.log(err, 'Error connecting call to freeswitch');
@@ -83,13 +83,11 @@ function setHandlers(ep, dlg) {
 //  (or in 1 second if there is no final prompt)
 function onIntent(ep, dlg, evt) {
     const responseId = evt.response_id;
-    console.log(`
-got intent $ { responseId }: $ { JSON.stringify(evt) }
+    console.log(`got intent ${responseId}: $ {JSON.stringify(evt)}
 `);
     if (responseId.length === 0) {
         console.log('no intent was detected, reprompt...');
-        ep.api('dialogflow_start', `
-$ { ep.uuid } $ { projectId } $ { lang } 30 actions_intent_NO_INPUT `);
+        ep.api('dialogflow_start', `${ep.uuid} ${projectId} ${lang} 30 actions_intent_NO_INPUT`);
     } else {
         if (evt.query_result.intent.end_interaction) {
             this.hangupAfterPlayDone = true;
@@ -105,37 +103,30 @@ $ { ep.uuid } $ { projectId } $ { lang } 30 actions_intent_NO_INPUT `);
 //    action: nothing, just log the transcription if this was a final transcription
 function onTranscription(transcription) {
     if (transcription.recognition_result.is_final) {
-        console.log(`
-got transcription: $ { JSON.stringify(transcription) }
-`);
+        console.log(`got transcription: ${JSON.stringify(transcription)}`);
     }
 }
 
 // event handler: we just got an audio clip we can play
 //    action: play the clip, and when it ends send another DialogIntentRequest
 async function onAudioProvided(ep, dlg, evt) {
-    console.log(`
-got audio file to play: $ { evt.path }
+    console.log(`got audio file to play: ${evt.path}
 `);
     ep.waitingForPlayStart = false;
     await ep.play(evt.path);
     if (ep.hangupAfterPlayDone) dlg.destroy();
-    else ep.api('dialogflow_start', `
-$ { ep.uuid } $ { projectId } $ { lang } 30 `);
+    else ep.api('dialogflow_start', `${ep.uuid} ${projectId} ${lang} 30`);
 }
 
 // event handler: speaker just completed saying something
 //    action: nothing, just log the event
 function onEndOfUtterance(evt) {
-    console.log(`
-got end of utterance: $ { JSON.stringify(evt) }
-`);
+    console.log(`got end of utterance: ${JSON.stringify(evt)}`);
 }
 
 // event handler: dialog flow error of some kind
 //    action: just log it
 function onError(evt) {
-    console.log(`
-got error: $ { JSON.stringify(evt) }
+    console.log(`got error: ${JSON.stringify(evt)}
 `);
 }
