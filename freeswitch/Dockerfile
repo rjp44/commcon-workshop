@@ -1,4 +1,4 @@
-FROM rjp44/drachtio-freeswitch-modules
+FROM drachtio/drachtio-freeswitch-mrf:grpc
 
 LABEL maintainer="Rob Pickering <rob@aplisay.uk>"
 
