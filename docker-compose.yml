@@ -20,6 +20,17 @@ services:
       - FREESWITCH_DTLS_SIP_PORT=5081
       - FREESWITCH_RTP_START_PORT=25000
       - FREESWITCH_RTP_END_PORT=25020
-
     volumes:
       - ./credentials:/credentials
+
+
+  node:
+    image: "node:10"
+    network_mode: "host"
+    user: "node"
+    working_dir: dractio-msf
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - drachtio-msf:/
+    command: "npm i && npm start"
