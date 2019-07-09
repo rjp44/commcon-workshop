@@ -59,7 +59,7 @@ function run(ms) {
             .then(({ endpoint, dialog }) => {
                 dialog.on('destroy', () => endpoint.destroy());
                 setHandlers(endpoint, dialog);
-                endpoint.api('dialogflow_start', `${endpoint.uuid} ${projectId} $ {lang} 30 ${startEvent}`);
+                endpoint.api('dialogflow_start', `${endpoint.uuid} ${projectId} ${lang} 30 ${startEvent}`);
             })
             .catch((err) => {
                 console.log(err, 'Error connecting call to freeswitch');
