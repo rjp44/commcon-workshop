@@ -21,7 +21,7 @@ srf.connect(config.get('drachtio'))
             headers: {
                 "From": `sip:${provider_username}@${provider_registrar}`,
                 "To": `sip:${provider_username}@${provider_registrar}`,
-                "Contact": `sips:{provider_username}@${provider_registrar}:${provider_port};transport=${provider_transport}`,
+                "Contact": `sips:${provider_username}@${provider_registrar}:${provider_port};transport=${provider_transport}`,
                 "User-Agent": "drachtio-srf",
                 "Allow": "OPTIONS, INVITE, ACK, BYE, CANCEL, UPDATE, PRACK, MESSAGE, REFER"
             },
@@ -83,8 +83,7 @@ function setHandlers(ep, dlg) {
 //  (or in 1 second if there is no final prompt)
 function onIntent(ep, dlg, evt) {
     const responseId = evt.response_id;
-    console.log(`got intent ${responseId}: $ {JSON.stringify(evt)}
-`);
+    console.log(`got intent ${responseId}: ${JSON.stringify(evt)}`);
     if (responseId.length === 0) {
         console.log('no intent was detected, reprompt...');
         ep.api('dialogflow_start', `${ep.uuid} ${projectId} ${lang} 30 actions_intent_NO_INPUT`);
@@ -110,8 +109,7 @@ function onTranscription(transcription) {
 // event handler: we just got an audio clip we can play
 //    action: play the clip, and when it ends send another DialogIntentRequest
 async function onAudioProvided(ep, dlg, evt) {
-    console.log(`got audio file to play: ${evt.path}
-`);
+    console.log(`got audio file to play: ${evt.path}`);
     ep.waitingForPlayStart = false;
     await ep.play(evt.path);
     if (ep.hangupAfterPlayDone) dlg.destroy();

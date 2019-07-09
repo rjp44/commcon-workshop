@@ -28,9 +28,8 @@ services:
     image: "node:10"
     network_mode: "host"
     user: "node"
-    working_dir: dractio-msf
     environment:
       - NODE_ENV=production
     volumes:
-      - drachtio-msf:/
-    command: "npm i && npm start"
+      - drachtio-mrf:/workspace
+    command: "sh -c 'cd workspace && sleep 30 && npm i && npm start'"
