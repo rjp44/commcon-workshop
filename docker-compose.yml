@@ -31,5 +31,5 @@ services:
     environment:
       - NODE_ENV=production
     volumes:
-      - drachtio-mrf:/workspace
+      - ./drachtio-mrf:/workspace
     command: "sh -c 'cd workspace && sleep 30 && npm i && npm start'"
