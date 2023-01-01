@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "config": "^3.0.1",
+    "config": "^3.3.8",
     "drachtio-fsmrf": "^1.2.8",
     "drachtio-srf": "git://github.com/rjp44/drachtio-srf.git#4.4.2-authfix",
     "eventemitter2": "^5.0.1",
